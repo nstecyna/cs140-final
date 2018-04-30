@@ -4,11 +4,21 @@ import java.util.TreeMap;
 
 public class MachineModel {
 	
-	public TreeMap<Integer, Instruction> INSTRUCTIONS;
+	public TreeMap<Integer, Instruction> INSTRUCTIONS = new TreeMap<>();
 	private CPU cpu = new CPU();
 	private Memory memory = new Memory();
 	private HaltCallback callback;
 	private boolean withGUI;
+	
+	private class CPU {
+		private int accumulator;
+		private int instructionPointer;
+		private int memoryBase;
+		
+		public void incrementIP(int val) {
+			this.instructionPointer += val;
+		}
+	}
 	
 	public MachineModel() {
 		this(false, null);
@@ -254,26 +264,43 @@ public class MachineModel {
 	}
 	
 	int[] getData() {
-		
+		return memory.getData();
 	}
 	
 	public int getData(int index) {
-		
+		return memory.getData(index);
 	}
 	
 	public void setData(int index, int value) {
-		
+		memory.setData(index, value);
 	}
 
-	private class CPU {
-		private int accumulator;
-		private int instructionPointer;
-		private int memoryBase;
-		
-		public void incrementIP(int val) {
-			this.instructionPointer += val;
-		}
+	public int getAccumulator() {
+		return cpu.accumulator;
 	}
 	
+	public void setAccumulator(int acc) {
+		cpu.accumulator = acc;
+	}
+	
+	public int getInstructionPointer() {
+		return cpu.instructionPointer;
+	}
+	
+	public void setInstructionPointer(int iP) {
+		cpu.instructionPointer = iP;
+	}
+	
+	public int getMemoryBase() {
+		return cpu.memoryBase;
+	}
+	
+	public void setMemoryBase(int memBase) {
+		cpu.memoryBase = memBase;
+	}
+	
+	public Instruction get(int index) {
+		return this.INSTRUCTIONS.get(index);
+	}
 	
 }
