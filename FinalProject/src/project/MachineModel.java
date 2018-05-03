@@ -1,6 +1,7 @@
 package project;
 
 import java.util.TreeMap;
+
 import projectview.States;
 
 public class MachineModel {
@@ -83,7 +84,7 @@ public class MachineModel {
         
         //INSTRUCTION_MAP entry for "JUMPI"
         INSTRUCTIONS.put(0x8, arg -> {
-            cpu.instructionPointer = arg;
+        	cpu.instructionPointer = currentJob.getStartcodeIndex() + arg;
         });
         
         //INSTRUCTION_MAP entry for "JMPZR"
@@ -108,7 +109,7 @@ public class MachineModel {
         //INSTRUCTION_MAP entry for "JMPZI"
         INSTRUCTIONS.put(0xB, arg -> {
         	if (cpu.accumulator == 0) {
-        		cpu.instructionPointer = arg;
+        		cpu.instructionPointer = currentJob.getStartcodeIndex() + arg;
         	} else {
         		cpu.incrementIP(1);
         	}
@@ -357,6 +358,10 @@ public class MachineModel {
 		return currentJob.getCurrentState();
 	}
 	
+	public void setCurrentState(States currentState) {
+		currentJob.setCurrentState(currentState);
+	}
+	
 	public void clearJob() {
 		memory.clearData(currentJob.getStartmemoryIndex(), currentJob.getStartmemoryIndex()+Memory.DATA_SIZE/2);
 		memory.clearCode(currentJob.getStartcodeIndex(), currentJob.getStartcodeIndex()+currentJob.getCodeSize());
@@ -379,6 +384,14 @@ public class MachineModel {
 			callback.halt();
 			throw e;
 		}
+	}
+	
+	public String getHex(int i) {
+		return memory.getHex(i);
+	}
+	
+	public String getDecimal(int i) {
+		return memory.getDecimal(i);
 	}
 	
 }

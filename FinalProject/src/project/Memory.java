@@ -44,10 +44,18 @@ public class Memory {
 		return changedIndex;
 	}
 	
-	void clearData(int start, int end) {
+	public void clearData(int start, int end) {
 		for (int i = start; i < end; i++)
 			data[i] = 0;
 		changedIndex = -1;
+	}
+	
+	public String getHex(int i) {
+		return Integer.toHexString(code[2*i]).toUpperCase() + " " + Integer.toHexString(code[2*i+1]).toUpperCase();
+	}
+	
+	public String getDecimal(int i) {
+		return InstrMap.toMnemonic.get(code[2*i]) + " " + code[2*i+1];
 	}
 	
 }
