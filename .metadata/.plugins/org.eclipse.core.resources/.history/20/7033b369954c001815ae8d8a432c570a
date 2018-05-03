@@ -1,0 +1,45 @@
+package projectview;
+
+import java.util.Observable;
+import project.MachineModel;
+import javax.swing.JFrame;
+import project.Job;
+
+public class ViewMediator extends Observable {
+
+	private MachineModel model;
+	private JFrame frame;
+	Job[] jobs = new Job[2];
+	private Job currentJob;
+	
+	public void step() { };
+	
+	public MachineModel getModel() {
+		return model;
+	}
+	
+	public void setModel(MachineModel m) {
+		model = m;
+	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+	
+	public Job getCurrentJob() {
+		return currentJob;
+	}
+	
+	public void setJob(int i) {
+		if(i != 0 || i != 1) {
+			throw new IllegalArgumentException("input must be 0 or 1.");
+		}
+		
+		currentJob.setCurrentAcc(cpu.accumulator);
+		currentJob.setCurrentIP(cpu.instrutionPointer);
+		
+		currentJob = jobs[i];
+		getCurrentJob().
+		
+	}
+}

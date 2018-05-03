@@ -1,0 +1,48 @@
+package projectview;
+
+public class FilesManager {
+
+	private ViewMediator view;
+
+	private MachineModel model; // imported from project
+
+	private String defaultDir; //this is Eclipse's default directory
+
+	private String sourceDir; // stored directory for pasm source files
+
+	private String executableDir; // stored directory for pexe assembled files
+	private Properties properties = null; // Java method for persistent program properties
+	private File currentlyExecutingFile = null;
+	
+	public FilesManager(ViewMediator v) {
+		view = v;
+		model = view.getCurrentJob();
+	}
+	
+	public void initialize() {
+		locateDefaultDirectory();
+		loadPropertiesFile();
+	}
+	
+	private void locateDefaultDirectory() {
+		//CODE TO DISCOVER THE ECLIPSE DEFAULT DIRECTORY:
+		File temp = new File("propertyfile.txt");
+		if(!temp.exists()) {
+			PrintWriter out;
+			try {
+				out = new PrintWriter(temp);
+				out.close();
+				defaultDir = temp.getAbsolutePath();
+				temp.delete();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			defaultDir = temp.getAbsolutePath();
+		}
+		// change to forward slashes
+		defaultDir = defaultDir.replace('\\','/');
+		int lastSlash = defaultDir.lastIndexOf('/');
+		defaultDir  = defaultDir.substring(0, lastSlash + 1);
+	}
+}

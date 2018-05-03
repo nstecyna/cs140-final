@@ -1,0 +1,70 @@
+package projectview;
+
+public class FilesManager {
+
+	private ViewMediator view;
+
+	private MachineModel model; // imported from project
+
+	private String defaultDir; //this is Eclipse's default directory
+
+	private String sourceDir; // stored directory for pasm source files
+
+	private String executableDir; // stored directory for pexe assembled files
+	private Properties properties = null; // Java method for persistent program properties
+	private File currentlyExecutingFile = null;
+	
+	public FilesManager(ViewMediator v) {
+		view = v;
+		model = view.getCurrentJob();
+	}
+	
+	public void initialize() {
+		locateDefaultDirectory();
+		loadPropertiesFile();
+	}
+	
+	private void locateDefaultDirectory() {
+		//CODE TO DISCOVER THE ECLIPSE DEFAULT DIRECTORY:
+		File temp = new File("propertyfile.txt");
+		if(!temp.exists()) {
+			PrintWriter out;
+			try {
+				out = new PrintWriter(temp);
+				out.close();
+				defaultDir = temp.getAbsolutePath();
+				temp.delete();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
+			defaultDir = temp.getAbsolutePath();
+		}
+		// change to forward slashes
+		defaultDir = defaultDir.replace('\\','/');
+		int lastSlash = defaultDir.lastIndexOf('/');
+		defaultDir  = defaultDir.substring(0, lastSlash + 1);
+	}
+	
+	void loadPropertiesFile() {
+		try { // load properties file "propertyfile.txt", if it exists
+			properties = new Properties();
+			properties.load(new FileInputStream("propertyfile.txt"));
+			sourceDir = properties.getProperty("SourceDirectory");
+			executableDir = properties.getProperty("ExecutableDirectory");
+			// CLEAN UP ANY ERRORS IN WHAT IS STORED:
+			if (sourceDir == null || sourceDir.length() == 0 
+					|| !new File(sourceDir).exists()) {
+				sourceDir = defaultDir;
+			}
+			if (executableDir == null || executableDir.length() == 0 
+					|| !new File(executableDir).exists()) {
+				executableDir = defaultDir;
+			}
+		} catch (Exception e) {
+			// PROPERTIES FILE DID NOT EXIST
+			sourceDir = defaultDir;
+			executableDir = defaultDir;
+		}		
+	}
+}

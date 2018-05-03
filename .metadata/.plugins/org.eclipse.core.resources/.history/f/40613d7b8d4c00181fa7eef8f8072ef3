@@ -1,0 +1,26 @@
+package projectview;
+
+import java.util.Observable;
+import project.MachineModel;
+import javax.swing.JFrame;
+
+public class ViewMediator extends Observable {
+
+	private MachineModel model;
+	private JFrame frame;
+	Jobs[] jobs = new Jobs[2];
+	
+	public void step() { };
+	
+	public MachineModel getModel() {
+		return model;
+	}
+	
+	public void setModel(MachineModel m) {
+		model = m;
+	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+}
