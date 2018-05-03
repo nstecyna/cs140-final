@@ -357,7 +357,7 @@ public class MachineModel {
 		return currentJob.getCurrentState();
 	}
 	
-	void clearJob() {
+	public void clearJob() {
 		memory.clearData(currentJob.getStartmemoryIndex(), currentJob.getStartmemoryIndex()+Memory.DATA_SIZE/2);
 		memory.clearCode(currentJob.getStartcodeIndex(), currentJob.getStartcodeIndex()+currentJob.getCodeSize());
 		cpu.accumulator = 0;
@@ -365,7 +365,7 @@ public class MachineModel {
 		currentJob.reset();
 	}
 	
-	void step() {
+	public void step() {
 		try {
 			int ip = cpu.instructionPointer;
 			

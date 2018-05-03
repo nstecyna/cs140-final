@@ -25,4 +25,12 @@ public class ViewMediator extends Observable {
 		return frame;
 	}
 	
+	public void clearJob() {
+		model.clearJob();
+	}
+	
+	void makeReady(String s) {
+		//TODO
+	}
+	
 }
