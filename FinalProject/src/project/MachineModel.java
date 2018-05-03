@@ -1,6 +1,7 @@
 package project;
 
 import java.util.TreeMap;
+import projectview.States;
 
 public class MachineModel {
 	
@@ -9,6 +10,8 @@ public class MachineModel {
 	private Memory memory = new Memory();
 	private HaltCallback callback;
 	private boolean withGUI;
+	Job[] jobs = new Job[2];
+	private Job currentJob;
 	
 	private class CPU {
 		private int accumulator;
@@ -261,6 +264,17 @@ public class MachineModel {
         INSTRUCTIONS.put(0x1F, arg -> {
         	callback.halt();
         });
+        
+        jobs[0] = new Job();
+        jobs[1] = new Job();
+        currentJob = jobs[0];
+        jobs[0].setStartcodeIndex(0);
+        jobs[0].setStartmemoryIndex(0);
+        jobs[1].setStartcodeIndex(Memory.CODE_MAX/4);
+        jobs[1].setStartmemoryIndex(Memory.DATA_SIZE/2);
+        jobs[0].setCurrentState(States.NOTHING_LOADED);
+        jobs[1].setCurrentState(States.NOTHING_LOADED);
+        
 	}
 	
 	int[] getData() {
@@ -317,6 +331,54 @@ public class MachineModel {
 	
 	public void setCode(int index, int op, int arg) {
 		memory.setCode(index, op, arg);
+	}
+	
+	public Job getCurrentJob() {
+		return currentJob;
+	}
+	
+	public void setJob(int i) {
+		if (i != 0 || i!= 1)
+			throw new IllegalArgumentException();
+		currentJob.setCurrentAcc(cpu.accumulator);
+		currentJob.setCurrentIP(cpu.instructionPointer);
+		
+		currentJob = jobs[i];
+		cpu.accumulator = currentJob.getCurrentAcc();
+		cpu.instructionPointer = currentJob.getCurrentIP();
+		cpu.memoryBase = currentJob.getStartmemoryIndex();
+	}
+	
+	public int getChangedIndex() {
+		return memory.getChangedIndex();
+	}
+	
+	public States getCurrentState() {
+		return currentJob.getCurrentState();
+	}
+	
+	void clearJob() {
+		memory.clearData(currentJob.getStartmemoryIndex(), currentJob.getStartmemoryIndex()+Memory.DATA_SIZE/2);
+		memory.clearCode(currentJob.getStartcodeIndex(), currentJob.getStartcodeIndex()+currentJob.getCodeSize());
+		cpu.accumulator = 0;
+		cpu.instructionPointer = currentJob.getStartcodeIndex();
+		currentJob.reset();
+	}
+	
+	void step() {
+		try {
+			int ip = cpu.instructionPointer;
+			
+			if ((currentJob.getStartcodeIndex() > ip || ip >= currentJob.getStartcodeIndex()+currentJob.getCodeSize()))
+				throw new CodeAccessException("");
+			
+			int opcode = getOp(ip);
+			int arg = getArg(ip);
+			get(opcode).execute(arg);
+		} catch (Exception e) {
+			callback.halt();
+			throw e;
+		}
 	}
 	
 }
