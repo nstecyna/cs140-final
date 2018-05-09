@@ -130,18 +130,18 @@ public class CodeViewPanel implements Observer {
 	}
 	
 	public static void main(String[] args) {
-		ViewMediator view = new ViewMediator(); 
-		MachineModel model = new MachineModel();
-		CodeViewPanel panel = new CodeViewPanel(view, model);
-		JFrame frame = new JFrame("TEST");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(400, 700);
-		frame.setLocationRelativeTo(null);
-		frame.add(panel.createCodeDisplay());
-		frame.setVisible(true);
-		String str = Loader.load(model, new File("large.pexe"), 0, 0);
-		model.getCurrentJob().setCodeSize(Integer.parseInt(str));
-		panel.update(view, "Load Code");
+		ViewMediator view = new ViewMediator();
+        MachineModel model = new MachineModel();
+        CodeViewPanel panel = new CodeViewPanel(view, model);
+        JFrame frame = new JFrame("TEST");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 700);
+        frame.setLocationRelativeTo(null);
+        frame.add(panel.createCodeDisplay());
+        frame.setVisible(true);
+        String str = Loader.load(model, new File("large.pexe"), 0, 0);
+        model.getCurrentJob().setCodeSize(Integer.parseInt(str));
+        panel.update(view, "Load Code");
 	}
 
 }

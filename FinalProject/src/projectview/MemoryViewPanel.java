@@ -50,7 +50,6 @@ public class MemoryViewPanel implements Observer{
 
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BorderLayout());
-        innerPanel.setBorder(border);
 
         JPanel numPanel = new JPanel();
         JPanel decimalPanel = new JPanel();

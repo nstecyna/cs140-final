@@ -1,8 +1,13 @@
+package projectview;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.util.Observable;
+import java.util.Observer;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-
-import com.sun.glass.events.KeyEvent;
 
 public class MenuBarBuilder implements Observer{
 
@@ -50,13 +55,13 @@ public class MenuBarBuilder implements Observer{
 
         go.setMnemonic(KeyEvent.VK_G);
         go.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
-        go.addActionListener(e -> view.go());
+        go.addActionListener(e -> view.execute());
         menu.add(go);
 
         return menu;
     }
 
-    public JMenu createJobMenu(){
+    public JMenu createJobsMenu(){
         JMenu menu = new JMenu("Job");
 
         job0.setMnemonic(KeyEvent.VK_0);
@@ -66,7 +71,7 @@ public class MenuBarBuilder implements Observer{
 
         menu.addSeparator();
 
-        job1.setMnemonic(KeyEvent_.VK_1);
+        job1.setMnemonic(KeyEvent.VK_1);
         job1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK));
         job1.addActionListener(e -> view.setJob(1));
         menu.add(job1);

@@ -1,8 +1,14 @@
 package projectview;
 
 import java.awt.GridLayout;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import project.MachineModel; // and other swing components
 
@@ -12,7 +18,7 @@ public class ProcessorViewPanel implements Observer {
     private JTextField acc2 = new JTextField();
     private JTextField acc3 = new JTextField();
 
-	public AccumulatorViewPanel(ViewMediator gui, MachineModel model) {
+	public ProcessorViewPanel(ViewMediator gui, MachineModel model) {
 		this.model = model;
 		gui.addObserver(this);
 	}
@@ -48,8 +54,8 @@ public class ProcessorViewPanel implements Observer {
 	public static void main(String[] args) {
 		ViewMediator view = new ViewMediator(); 
 		MachineModel model = new MachineModel();
-		AccumulatorViewPanel panel = 
-			new AccumulatorViewPanel(view, model);
+		ProcessorViewPanel panel = 
+			new ProcessorViewPanel(view, model);
 		JFrame frame = new JFrame("TEST");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(700, 60);

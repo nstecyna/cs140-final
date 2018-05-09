@@ -1,16 +1,18 @@
 package project;
 
 import java.util.TreeMap;
+import java.util.Map;
 
 import projectview.States;
 
 public class MachineModel {
 	
-	public TreeMap<Integer, Instruction> INSTRUCTIONS = new TreeMap<>();
+	public Map<Integer, Instruction> INSTRUCTIONS = new TreeMap<>();
 	private CPU cpu = new CPU();
 	private Memory memory = new Memory();
 	private HaltCallback callback;
 	private boolean withGUI;
+	
 	Job[] jobs = new Job[2];
 	private Job currentJob;
 	
@@ -264,7 +266,13 @@ public class MachineModel {
     	//INSTRUCTION_MAP entry for "HALT"
         INSTRUCTIONS.put(0x1F, arg -> {
         	callback.halt();
-        });
+		});
+		
+		//INSTRUCTION_MAP entry for "JUMPN"
+		INSTRUCTIONS.put(29, arg -> {
+		int arg1 = memory.getData(cpu.memoryBase+arg);
+		cpu.instructionPointer = currentJob.getStartcodeIndex() + arg1;
+		});
         
         jobs[0] = new Job();
         jobs[1] = new Job();
@@ -273,8 +281,10 @@ public class MachineModel {
         jobs[0].setStartmemoryIndex(0);
         jobs[1].setStartcodeIndex(Memory.CODE_MAX/4);
         jobs[1].setStartmemoryIndex(Memory.DATA_SIZE/2);
-        jobs[0].setCurrentState(States.NOTHING_LOADED);
-        jobs[1].setCurrentState(States.NOTHING_LOADED);
+        
+        for(int i =0; i<jobs.length;i++){
+			jobs[i].setCurrentState(States.NOTHING_LOADED);
+		}
         
 	}
 	
@@ -377,8 +387,8 @@ public class MachineModel {
 			if ((currentJob.getStartcodeIndex() > ip || ip >= currentJob.getStartcodeIndex()+currentJob.getCodeSize()))
 				throw new CodeAccessException("");
 			
-			int opcode = getOp(ip);
-			int arg = getArg(ip);
+			int opcode = memory.getOp(ip);
+			int arg = memory.getArg(ip);
 			get(opcode).execute(arg);
 		} catch (Exception e) {
 			callback.halt();
