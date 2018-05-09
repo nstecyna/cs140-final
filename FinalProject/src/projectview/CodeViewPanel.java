@@ -41,15 +41,14 @@ public class CodeViewPanel implements Observer {
         panel.setLayout(new BorderLayout());
         
         Border border = BorderFactory.createTitledBorder(
-	    BorderFactory.createLineBorder(Color.BLACK), 
-	    "Code Memory View",
-        TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
+		    BorderFactory.createLineBorder(Color.BLACK), 
+		    "Code Memory View [" + 0 + "-" + Memory.CODE_MAX/2 + "]",
+	        TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION);
         
         panel.setBorder(border);
 
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new BorderLayout());
-        innerPanel.setBorder(border);
 
         JPanel numPanel = new JPanel();
         JPanel decimalPanel = new JPanel();
@@ -67,8 +66,8 @@ public class CodeViewPanel implements Observer {
             numPanel.add(new JLabel(i+": ", JLabel.RIGHT));
             codeDecimal[i] = new JTextField(10);
             codeHex[i] = new JTextField(10);
-            decimalPanel.add(codeDecimal[i]);
-            hexPanel.add(codeHex[i]);
+            decimalPanel.add(codeDecimal[i-0]);
+            hexPanel.add(codeHex[i-0]);
         }
 
         scroller = new JScrollPane(innerPanel);
