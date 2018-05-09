@@ -349,7 +349,7 @@ public class MachineModel {
 	}
 	
 	public void setJob(int i) {
-		if (i != 0 || i!= 1)
+		if (i != 0 && i!= 1)
 			throw new IllegalArgumentException();
 		currentJob.setCurrentAcc(cpu.accumulator);
 		currentJob.setCurrentIP(cpu.instructionPointer);
