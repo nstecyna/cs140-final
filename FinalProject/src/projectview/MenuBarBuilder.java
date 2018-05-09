@@ -5,9 +5,7 @@ import java.awt.event.KeyEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 
 public class MenuBarBuilder implements Observer{
 
@@ -21,7 +19,7 @@ public class MenuBarBuilder implements Observer{
 
     public MenuBarBuilder(ViewMediator gui) { 
         view = gui; gui.addObserver(this); 
-    }
+   }
 
     public JMenu createFileMenu(){
         JMenu menu = new JMenu("File");
@@ -33,7 +31,7 @@ public class MenuBarBuilder implements Observer{
         assemble.addActionListener(e -> view.assembleFile());
         menu.add(assemble);
 
-        menu.addSeparator();
+        // menu.addSeparator();
 
         load.setMnemonic(KeyEvent.VK_L);
         load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
@@ -81,11 +79,12 @@ public class MenuBarBuilder implements Observer{
 
     public void update(Observable arg0, Object arg1){
     
-        assemble.setEnabled(view.getCurrentState().getAssembleFileActive());
-        load.setEnabled(view.getCurrentState().getLoadFileActive());
-        go.setEnabled(view.getCurrentState().getStepActive());
-        job0.setEnabled(view.getCurrentState().getChangeJobActive());
-        job1.setEnabled(view.getCurrentState().getChangeJobActive());
+    	assemble.setEnabled(view.getCurrentState().getAssembleFileActive());
+    	load.setEnabled(view.getCurrentState().getLoadFileActive());
+    	exit.setEnabled(view.getCurrentState().getClearActive());
+    	go.setEnabled(view.getCurrentState().getStepActive());
+    	job0.setEnabled(view.getCurrentState().getChangeJobActive());
+    	job1.setEnabled(view.getCurrentState().getChangeJobActive());
         
     }
 }

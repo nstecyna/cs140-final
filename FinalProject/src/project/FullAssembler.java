@@ -41,7 +41,8 @@ public class FullAssembler implements Assembler {
 
 				// if blank line, find out if the next one is
 				if (line.trim().length() == 0) {
-					blankLine = lineNum;
+					if (!hasBlankLine)
+						blankLine = lineNum;
 					hasBlankLine = true;
 					continue;
 				}
@@ -51,6 +52,16 @@ public class FullAssembler implements Assembler {
 					retVal = lineNum;
 				}
 
+				// if the line says "DATA"
+				if (line.trim().equalsIgnoreCase("DATA")) {
+					if (!line.trim().equals("DATA")) {
+						error.append("\nLine does not have DATA in upper case");
+						retVal = lineNum;
+					}
+					isData = true;
+					continue;
+				}
+				
 				// if reading after "DATA"
 				if (isData) {
 					parts = line.trim().split("\\s+");
@@ -74,16 +85,6 @@ public class FullAssembler implements Assembler {
 							retVal = lineNum;
 						}
 					}
-				}
-
-				// if the line says "DATA"
-				if (line.trim().equalsIgnoreCase("DATA")) {
-					if (!line.trim().equals("DATA")) {
-						error.append("\nLine does not have DATA in upper case");
-						retVal = lineNum;
-					}
-					isData = true;
-					continue;
 				}
 
 				// if reading before "DATA

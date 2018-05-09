@@ -1,15 +1,9 @@
 package projectview;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.util.Observable;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import project.CodeAccessException;
 import project.DivideByZeroException;
@@ -179,7 +173,6 @@ public class ViewMediator extends Observable {
 		center.add(memoryViewPanel2.createMemoryDisplay());
 		center.add(memoryViewPanel3.createMemoryDisplay());
 		 
-		frame.add(center, BorderLayout.CENTER);
 		frame.add(controlPanel.createControlDisplay(),BorderLayout.PAGE_END);
 		frame.add(processorPanel.createProcessorDisplay(),BorderLayout.PAGE_START);
 		JMenuBar bar = new JMenuBar();
@@ -193,7 +186,7 @@ public class ViewMediator extends Observable {
 		
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(WindowListenerFactory.
-		windowClosingFactory(e -> exit()));
+					windowClosingFactory(e -> exit()));
 		model.setCurrentState(States.NOTHING_LOADED);
 		animator.start();
 		model.getCurrentState().enter();
@@ -208,9 +201,9 @@ public class ViewMediator extends Observable {
 	}
 	
 	public void setCurrentState(States currentState) {
-		model.setCurrentState(currentState);
 		if (currentState == States.PROGRAM_HALTED)
 			animator.setAutoStepOn(false);
+		model.setCurrentState(currentState);
 		model.getCurrentState().enter();
 		setChanged();
 		notifyObservers();
@@ -278,8 +271,8 @@ public class ViewMediator extends Observable {
 			public void run() {
 				ViewMediator mediator = new ViewMediator();
 				MachineModel model = new MachineModel(
-				true,  
-				() -> mediator.setCurrentState(States.PROGRAM_HALTED)
+						true,  
+						() -> mediator.setCurrentState(States.PROGRAM_HALTED)
 				);
 				mediator.setModel(model);
 				mediator.createAndShowGUI();

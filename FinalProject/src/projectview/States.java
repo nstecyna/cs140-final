@@ -5,25 +5,53 @@ public enum States {
 	AUTO_STEPPING {
 		@Override
 		public void enter() {
-			// TODO Auto-generated method stub
+			states[ASSEMBLE] = false;
+			states[CLEAR] = false;
+			states[LOAD] = false;
+			states[RELOAD] = false;
+			states[RUN] = true;
+			states[RUNNING] = true;
+			states[STEP] = false;
+			states[CHANGE_JOB] = false;
 			
 		}
 	}, NOTHING_LOADED {
 		@Override
 		public void enter() {
-			// TODO Auto-generated method stub
+			states[ASSEMBLE] = true;
+			states[CLEAR] = false;
+			states[LOAD] = true;
+			states[RELOAD] = false;
+			states[RUN] = false;
+			states[RUNNING] = false;
+			states[STEP] = false;
+			states[CHANGE_JOB] = true;
 			
 		}
 	}, PROGRAM_HALTED {
 		@Override
 		public void enter() {
-			// TODO Auto-generated method stub
+			states[ASSEMBLE] = true;
+			states[CLEAR] = true;
+			states[LOAD] = true;
+			states[RELOAD] = true;
+			states[RUN] = false;
+			states[RUNNING] = false;
+			states[STEP] = false;
+			states[CHANGE_JOB] = true;
 			
 		}
 	}, PROGRAM_LOADED_NOT_AUTOSTEPPING {
 		@Override
 		public void enter() {
-			// TODO Auto-generated method stub
+			states[ASSEMBLE] = true;
+			states[CLEAR] = true;
+			states[LOAD] = true;
+			states[RELOAD] = true;
+			states[RUN] = true;
+			states[RUNNING] = false;
+			states[STEP] = true;
+			states[CHANGE_JOB] = true;
 			
 		}
 	};
