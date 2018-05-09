@@ -1,0 +1,60 @@
+package projectview;
+
+import java.awt.GridLayout;
+
+import javax.swing.JPanel;
+
+import project.MachineModel; // and other swing components
+
+public class ProcessorViewPanel implements Observer {
+	private MachineModel model;
+    private JTextField acc = new JTextField(); 
+    private JTextField acc2 = new JTextField();
+    private JTextField acc3 = new JTextField();
+
+	public AccumulatorViewPanel(ViewMediator gui, MachineModel model) {
+		this.model = model;
+		gui.addObserver(this);
+	}
+
+	public JComponent createProcessorDisplay() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(1,0));
+		panel.add(new JLabel("Accumulator: ", JLabel.RIGHT));
+        panel.add(acc);
+
+        panel.add(new JLabel("Instruction Pointer: ", JLabel.RIGHT));
+        panel.add(acc2);
+
+        panel.add(new JLabel("Memory Base: ", JLabel.RIGHT));
+        panel.add(acc3);
+
+        
+        return panel;
+
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(model != null) {
+            acc.setText("" + model.getAccumulator());
+            
+            acc2.setText("" + model.getInstructionPointer());
+
+            acc3.setText("" + model.getMemoryBase());
+		}
+	}
+	
+	public static void main(String[] args) {
+		ViewMediator view = new ViewMediator(); 
+		MachineModel model = new MachineModel();
+		AccumulatorViewPanel panel = 
+			new AccumulatorViewPanel(view, model);
+		JFrame frame = new JFrame("TEST");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(700, 60);
+		frame.setLocationRelativeTo(null);
+		frame.add(panel.createProcessorDisplay());
+		frame.setVisible(true);
+	}
+}
